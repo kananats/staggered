@@ -2,18 +2,18 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-class ListViewAnimatorController {
+class GridViewAnimatorController {
   final void Function() _reset;
 
-  ListViewAnimatorController(void Function() reset) : _reset = reset;
+  GridViewAnimatorController(void Function() reset) : _reset = reset;
 
   void reset() => _reset();
 }
 
-class ListViewAnimator extends StatefulWidget {
-  final ListViewAnimatorController controller;
+class GridViewAnimator extends StatefulWidget {
+  final GridViewAnimatorController controller;
 
-  final ListView child;
+  final GridView child;
 
   final Widget Function(BuildContext context, Widget child, Animation animation)
       builder;
@@ -23,7 +23,7 @@ class ListViewAnimator extends StatefulWidget {
 
   final Curve curve;
 
-  ListViewAnimator({
+  GridViewAnimator({
     Key key,
     this.controller,
     @required this.child,
@@ -39,25 +39,25 @@ class ListViewAnimator extends StatefulWidget {
                   begin: 0,
                   end: 1,
                 ).animate(animation),
-                child: SlideTransition(
-                  position: Tween<Offset>(
-                    begin: Offset(0.55, 0),
-                    end: Offset(0, 0),
+                child: ScaleTransition(
+                  scale: Tween<double>(
+                    begin: 0,
+                    end: 1,
                   ).animate(animation),
                   child: child,
                 ),
               );
             }),
-        duration = duration ?? ((_) => Duration(milliseconds: 425)),
-        delay =
-            delay ?? ((index) => Duration(milliseconds: 125) * pow(index, 0.8)),
+        duration = duration ?? ((_) => Duration(milliseconds: 325)),
+        delay = delay ??
+            ((index) => Duration(milliseconds: 125) * pow(index, 0.75)),
         super(key: key);
 
   @override
-  _ListViewAnimatorState createState() => _ListViewAnimatorState();
+  _GridViewAnimatorState createState() => _GridViewAnimatorState();
 }
 
-class _ListViewAnimatorState extends State<ListViewAnimator>
+class _GridViewAnimatorState extends State<GridViewAnimator>
     with TickerProviderStateMixin {
   AnimationController _animationController;
 
@@ -75,23 +75,9 @@ class _ListViewAnimatorState extends State<ListViewAnimator>
   Widget build(BuildContext context) {
     final child = widget.child;
 
-    return ListView.custom(
-      key: child.key,
-      scrollDirection: child.scrollDirection,
-      reverse: child.reverse,
-      controller: child.controller,
-      primary: child.primary,
-      physics: child.physics,
-      shrinkWrap: child.shrinkWrap,
-      padding: child.padding,
-      itemExtent: child.itemExtent,
+    return GridView.custom(
+      gridDelegate: child.gridDelegate,
       childrenDelegate: _makeChildDelegate(child.childrenDelegate),
-      cacheExtent: child.cacheExtent,
-      semanticChildCount: child.semanticChildCount,
-      dragStartBehavior: child.dragStartBehavior,
-      keyboardDismissBehavior: child.keyboardDismissBehavior,
-      restorationId: child.restorationId,
-      clipBehavior: child.clipBehavior,
     );
   }
 
@@ -128,7 +114,6 @@ class _ListViewAnimatorState extends State<ListViewAnimator>
   Duration get _totalDuration {
     final listViewDelegate = widget.child.childrenDelegate;
     final childCount = listViewDelegate.estimatedChildCount ?? 20;
-
     return widget.duration(childCount - 1) + widget.delay(childCount - 1);
   }
 

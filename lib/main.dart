@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:staggered/grid_animator.dart';
 import 'package:staggered/list_animator.dart';
 
 void main() {
@@ -32,16 +33,49 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListViewAnimator(
-        child: ListView.builder(
+        body: GridViewAnimator(
+      child: GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          mainAxisSpacing: 10,
+          crossAxisSpacing: 10,
+        ),
+        //itemCount: 10,
+        itemBuilder: (context, index) {
+          return Container(
+            color: Colors.green,
+            child: Center(
+              child: Text("$index"),
+            ),
+          );
+        },
+      ),
+    )
+        /*body: ListViewAnimator(
+        /*child: ListView.builder(
           itemCount: 20,
           itemBuilder: (context, index) {
             return ListTile(
               title: Text("Item $index"),
             );
           },
+        ),*/
+        /*child: ListView(
+          children: [
+            ListTile(title: Text("Item 0")),
+            ListTile(title: Text("Item 1")),
+          ],
+        ),*/
+        child: ListView.separated(
+          itemCount: 20,
+          itemBuilder: (context, index) {
+            return ListTile(
+              title: Text("Item $index"),
+            );
+          },
+          separatorBuilder: (context, index) => Divider(),
         ),
-      ),
-    );
+      ),*/
+        );
   }
 }
