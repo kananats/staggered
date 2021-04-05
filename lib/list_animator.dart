@@ -56,7 +56,8 @@ class ListViewAnimator extends StatefulWidget {
         super(key: key);
 
   @override
-  _ListViewAnimatorState createState() => _ListViewAnimatorState();
+  _ListViewAnimatorState createState() =>
+      _ListViewAnimatorState(controller: controller);
 }
 
 class _ListViewAnimatorState extends State<ListViewAnimator>
