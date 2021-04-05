@@ -37,7 +37,7 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          _controller.reset();
+          _controller.replay();
         },
       ),
       body: GridViewAnimator(
