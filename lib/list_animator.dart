@@ -3,9 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 class ListViewAnimatorController {
-  final void Function() _reset;
-
-  ListViewAnimatorController(void Function() reset) : _reset = reset;
+  void Function() _reset;
 
   void reset() => _reset();
 }
@@ -64,6 +62,8 @@ class _ListViewAnimatorState extends State<ListViewAnimator>
   @override
   void initState() {
     super.initState();
+
+    widget.controller._reset = _reset;
 
     _animationController =
         AnimationController(vsync: this, duration: _totalDuration);
@@ -142,5 +142,9 @@ class _ListViewAnimatorState extends State<ListViewAnimator>
       ),
       parent: _animationController,
     );
+  }
+
+  void _reset() {
+    _animationController.reset();
   }
 }

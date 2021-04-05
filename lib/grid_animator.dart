@@ -3,9 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 class GridViewAnimatorController {
-  final void Function() _reset;
-
-  GridViewAnimatorController(void Function() reset) : _reset = reset;
+  void Function() _reset;
 
   void reset() => _reset();
 }
@@ -64,6 +62,8 @@ class _GridViewAnimatorState extends State<GridViewAnimator>
   @override
   void initState() {
     super.initState();
+
+    widget.controller._reset = _reset;
 
     _animationController =
         AnimationController(vsync: this, duration: _totalDuration);
@@ -127,5 +127,9 @@ class _GridViewAnimatorState extends State<GridViewAnimator>
       ),
       parent: _animationController,
     );
+  }
+
+  void _reset() {
+    _animationController.reset();
   }
 }
