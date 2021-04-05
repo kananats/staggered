@@ -3,9 +3,13 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 class GridViewAnimatorController {
-  void Function() _reset;
+  void Function() _replay;
 
-  void reset() => _reset();
+  void replay() {
+    assert(_replay != null,
+        "Please ensure this is attached to `GridViewAnimator`");
+    _replay();
+  }
 }
 
 class GridViewAnimator extends StatefulWidget {
@@ -52,23 +56,28 @@ class GridViewAnimator extends StatefulWidget {
         super(key: key);
 
   @override
-  _GridViewAnimatorState createState() => _GridViewAnimatorState();
+  _GridViewAnimatorState createState() =>
+      _GridViewAnimatorState(controller: controller);
 }
 
 class _GridViewAnimatorState extends State<GridViewAnimator>
     with TickerProviderStateMixin {
   AnimationController _animationController;
 
+  _GridViewAnimatorState({
+    GridViewAnimatorController controller,
+  }) {
+    controller?._replay = _replay;
+  }
+
   @override
   void initState() {
     super.initState();
 
-    widget.controller._reset = _reset;
-
     _animationController =
         AnimationController(vsync: this, duration: _totalDuration);
 
-    _reset();
+    _replay();
   }
 
   @override
@@ -129,7 +138,7 @@ class _GridViewAnimatorState extends State<GridViewAnimator>
     );
   }
 
-  void _reset() {
+  void _replay() {
     _animationController.reset();
     _animationController.forward();
   }

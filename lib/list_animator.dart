@@ -3,9 +3,13 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 class ListViewAnimatorController {
-  void Function() _reset;
+  void Function() _replay;
 
-  void reset() => _reset();
+  void reset() {
+    assert(_replay != null,
+        "Please ensure this is attached to `ListViewAnimator`");
+    _replay();
+  }
 }
 
 class ListViewAnimator extends StatefulWidget {
@@ -59,16 +63,20 @@ class _ListViewAnimatorState extends State<ListViewAnimator>
     with TickerProviderStateMixin {
   AnimationController _animationController;
 
+  _ListViewAnimatorState({
+    ListViewAnimatorController controller,
+  }) {
+    controller?._replay = _replay;
+  }
+
   @override
   void initState() {
     super.initState();
 
-    widget.controller._reset = _reset;
-
     _animationController =
         AnimationController(vsync: this, duration: _totalDuration);
 
-    _reset();
+    _replay();
   }
 
   @override
@@ -144,7 +152,7 @@ class _ListViewAnimatorState extends State<ListViewAnimator>
     );
   }
 
-  void _reset() {
+  void _replay() {
     _animationController.reset();
     _animationController.forward();
   }

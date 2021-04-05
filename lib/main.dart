@@ -30,52 +30,71 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
+  final _controller = GridViewAnimatorController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: GridViewAnimator(
-      child: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          mainAxisSpacing: 10,
-          crossAxisSpacing: 10,
-        ),
-        //itemCount: 10,
-        itemBuilder: (context, index) {
-          return Container(
-            color: Colors.green,
-            child: Center(
-              child: Text("$index"),
-            ),
-          );
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _controller.reset();
         },
       ),
-    )
-        /*body: ListViewAnimator(
-        /*child: ListView.builder(
-          itemCount: 20,
-          itemBuilder: (context, index) {
-            return ListTile(
-              title: Text("Item $index"),
-            );
-          },
-        ),*/
-        /*child: ListView(
-          children: [
-            ListTile(title: Text("Item 0")),
-            ListTile(title: Text("Item 1")),
-          ],
-        ),*/
-        child: ListView.separated(
-          itemCount: 20,
-          itemBuilder: (context, index) {
-            return ListTile(
-              title: Text("Item $index"),
-            );
-          },
-          separatorBuilder: (context, index) => Divider(),
-        ),
-      ),*/
+      body: GridViewAnimator(
+        controller: _controller,
+        child: _buildGridView1(),
+      ),
+    );
+  }
+
+  GridView _buildGridView1() {
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 3,
+        mainAxisSpacing: 10,
+        crossAxisSpacing: 10,
+      ),
+      itemCount: 10,
+      itemBuilder: (context, index) {
+        return Container(
+          color: Colors.green,
+          child: Center(
+            child: Text("$index"),
+          ),
         );
+      },
+    );
+  }
+
+  ListView _buildListView1() {
+    return ListView.builder(
+      itemCount: 20,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text("Item $index"),
+        );
+      },
+    );
+  }
+
+  ListView _buildListView2() {
+    return ListView(
+      children: [
+        ListTile(title: Text("Item 0")),
+        ListTile(title: Text("Item 1")),
+      ],
+    );
+  }
+
+  ListView _buildListView3() {
+    return ListView.separated(
+      itemCount: 20,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text("Item $index"),
+        );
+      },
+      separatorBuilder: (context, index) => Divider(),
+    );
   }
 }
