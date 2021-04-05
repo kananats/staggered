@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class ListViewAnimatorController {
   void Function() _replay;
 
-  void reset() {
+  void replay() {
     assert(_replay != null,
         "Please ensure this is attached to `ListViewAnimator`");
     _replay();
