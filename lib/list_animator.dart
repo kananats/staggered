@@ -68,7 +68,7 @@ class _ListViewAnimatorState extends State<ListViewAnimator>
     _animationController =
         AnimationController(vsync: this, duration: _totalDuration);
 
-    _animationController.forward();
+    _reset();
   }
 
   @override
@@ -146,5 +146,6 @@ class _ListViewAnimatorState extends State<ListViewAnimator>
 
   void _reset() {
     _animationController.reset();
+    _animationController.forward();
   }
 }

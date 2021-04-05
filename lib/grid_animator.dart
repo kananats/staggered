@@ -68,7 +68,7 @@ class _GridViewAnimatorState extends State<GridViewAnimator>
     _animationController =
         AnimationController(vsync: this, duration: _totalDuration);
 
-    _animationController.forward();
+    _reset();
   }
 
   @override
@@ -131,5 +131,6 @@ class _GridViewAnimatorState extends State<GridViewAnimator>
 
   void _reset() {
     _animationController.reset();
+    _animationController.forward();
   }
 }
