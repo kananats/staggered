@@ -3,22 +3,20 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 class GridViewAnimatorController {
-  void Function() _replay;
+  late void Function() _replay;
 
   void replay() {
-    assert(_replay != null,
-        "Please ensure this is attached to `GridViewAnimator`");
     _replay();
   }
 }
 
 class GridViewAnimator extends StatefulWidget {
-  final GridViewAnimatorController controller;
+  final GridViewAnimatorController? controller;
 
   final GridView child;
 
-  final Widget Function(BuildContext context, Widget child, Animation animation)
-      builder;
+  final Widget Function(
+      BuildContext context, Widget child, Animation<double> animation) builder;
 
   final Duration Function(int index) duration;
   final Duration Function(int index) delay;
@@ -26,13 +24,14 @@ class GridViewAnimator extends StatefulWidget {
   final Curve curve;
 
   GridViewAnimator({
-    Key key,
+    Key? key,
     this.controller,
-    @required this.child,
-    Widget Function(BuildContext context, Widget child, Animation animation)
+    required this.child,
+    Widget Function(
+            BuildContext context, Widget child, Animation<double> animation)?
         builder,
-    Duration Function(int index) duration,
-    Duration Function(int index) delay,
+    Duration Function(int index)? duration,
+    Duration Function(int index)? delay,
     this.curve = Curves.fastOutSlowIn,
   })  : builder = builder ??
             ((context, child, animation) {
@@ -62,10 +61,10 @@ class GridViewAnimator extends StatefulWidget {
 
 class _GridViewAnimatorState extends State<GridViewAnimator>
     with TickerProviderStateMixin {
-  AnimationController _animationController;
+  late AnimationController _animationController;
 
   _GridViewAnimatorState({
-    GridViewAnimatorController controller,
+    GridViewAnimatorController? controller,
   }) {
     controller?._replay = _replay;
   }
@@ -110,7 +109,7 @@ class _GridViewAnimatorState extends State<GridViewAnimator>
             return delegate.builder(context, index);
           return widget.builder(
             context,
-            delegate.builder(context, index),
+            delegate.builder(context, index) ?? Container(), // TODO: verify
             _curvedAnimation(index, _totalDuration),
           );
         },

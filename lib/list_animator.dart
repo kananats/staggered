@@ -3,22 +3,20 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 class ListViewAnimatorController {
-  void Function() _replay;
+  late void Function() _replay;
 
   void replay() {
-    assert(_replay != null,
-        "Please ensure this is attached to `ListViewAnimator`");
     _replay();
   }
 }
 
 class ListViewAnimator extends StatefulWidget {
-  final ListViewAnimatorController controller;
+  final ListViewAnimatorController? controller;
 
   final ListView child;
 
-  final Widget Function(BuildContext context, Widget child, Animation animation)
-      builder;
+  final Widget Function(
+      BuildContext context, Widget? child, Animation<double> animation) builder;
 
   final Duration Function(int index) duration;
   final Duration Function(int index) delay;
@@ -26,13 +24,14 @@ class ListViewAnimator extends StatefulWidget {
   final Curve curve;
 
   ListViewAnimator({
-    Key key,
+    Key? key,
     this.controller,
-    @required this.child,
-    Widget Function(BuildContext context, Widget child, Animation animation)
+    required this.child,
+    Widget Function(
+            BuildContext context, Widget? child, Animation<double> animation)?
         builder,
-    Duration Function(int index) duration,
-    Duration Function(int index) delay,
+    Duration Function(int index)? duration,
+    Duration Function(int index)? delay,
     this.curve = Curves.fastOutSlowIn,
   })  : builder = builder ??
             ((context, child, animation) {
@@ -62,10 +61,10 @@ class ListViewAnimator extends StatefulWidget {
 
 class _ListViewAnimatorState extends State<ListViewAnimator>
     with TickerProviderStateMixin {
-  AnimationController _animationController;
+  late AnimationController _animationController;
 
   _ListViewAnimatorState({
-    ListViewAnimatorController controller,
+    ListViewAnimatorController? controller,
   }) {
     controller?._replay = _replay;
   }
