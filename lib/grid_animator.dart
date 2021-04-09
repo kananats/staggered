@@ -122,6 +122,9 @@ class _GridViewAnimatorState extends State<GridViewAnimator>
   Duration get _totalDuration {
     final listViewDelegate = widget.child.childrenDelegate;
     final childCount = listViewDelegate.estimatedChildCount ?? 20;
+
+    if (childCount <= 0) return Duration.zero;
+
     return widget.duration(childCount - 1) + widget.delay(childCount - 1);
   }
 
